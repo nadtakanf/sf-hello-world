@@ -1,0 +1,29 @@
+service: sf-hello-world
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  hello:
+    handler: handler.hello
+
+stepFunctions:
+  stateMachines:
+    hellostepfunc1:
+      name: myStateMachine
+      definition:
+        StartAt: HelloWorld1
+        States:
+          HelloWorld1:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [hello, Arn]
+            End: true
+      tags:
+        Team: Atlantis
+
+plugins:
+  - serverless-step-functions
